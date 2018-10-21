@@ -16,7 +16,7 @@ void	MoveCharsToLeft(char **str)
 
 void	FixFormatting(char **str)
 {
-	char	*pt			= *str;
+	char	*pt = *str;
 
 	/*cleanup if exp == 0*/
 	if ((pt = strchr(pt, 'e')) != NULL && atoi(pt + 2) == 0)
@@ -48,25 +48,17 @@ char	*DoubleToScientificNotation(double number, int type)
 {
 	char	*out = NULL;
 	size_t	out_size = 0;
+	char	printf_str[6];
+
 	if (type == 0)
-	{
-	/*scientific notation*/
-		out_size = snprintf(out, 0, "%.12e", number) + 1;
-		if (!(out = malloc(sizeof(*out) * (out_size))))
-			return (NULL);
-		bzero (out, out_size);
-		snprintf(out, out_size, "%.12e", number);
-		FixFormatting(&out);
-	}
+		strncpy(printf_str, "%.12e", 6);
 	else
-	{
-	/*Standard notation*/
-		out_size = snprintf(out, 0, "%f", number) + 1;
-		if (!(out = malloc(sizeof(*out) * (out_size))))
-			return (NULL);
-		bzero (out, out_size);
-		snprintf(out, out_size, "%f", number);
-		FixFormatting(&out);
-	}
+		strncpy(printf_str,"%f", 6);
+	out_size = snprintf(out, 0, printf_str, number) + 1;
+	if (!(out = malloc(sizeof(*out) * (out_size))))
+		return (NULL);
+	bzero (out, out_size);
+	snprintf(out, out_size, printf_str, number);
+	FixFormatting(&out);
 	return (out);
 }
